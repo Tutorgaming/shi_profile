@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile Changer</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="Profile Changer">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" href="css/style.css">
+	<link href='https://fonts.googleapis.com/css?family=Kanit:400,600,300,500italic&subset=thai,latin' rel='stylesheet' type='text/css'>
+
+	<style type="text/css"></style>
+</head>
+<body>
+	<div class="outer">
+		<div class="middle">
+			<div class="inner">
+
+				<div id="canvas">
+					<canvas id="imageCanvas"></canvas>
+				</div>
+				<div id="header">
+					<h1>Welcome</h1>
+				</div>
+
+				<div class="box" id="uploader">
+					<input type="file" name="file-1[]" id="imageLoader" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple />
+					<label for="imageLoader"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Choose a file&hellip;</span></label>
+				</div>
+				<div id="underline">
+				<div class="box inline" id="rotater">
+					<div class="inputfile inputfile-1">
+					</div>
+					<label><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="512px" height="512px" viewBox="0 0 16 16">
+						<path fill="#FFFFFF" d="M16 7v-4l-1.1 1.1c-1.3-2.5-3.9-4.1-6.9-4.1-4.4 0-8 3.6-8 8s3.6 8 8 8c2.4 0 4.6-1.1 6-2.8l-1.5-1.3c-1.1 1.3-2.7 2.1-4.5 2.1-3.3 0-6-2.7-6-6s2.7-6 6-6c2.4 0 4.5 1.5 5.5 3.5l-1.5 1.5h4z"/>
+					</svg><span>Rotate</span></label>
+				</div>
+
+				<div class="box inline" id="downloader">
+					<a id="download-btn" download="profile-pic.png"><div class="inputfile inputfile-1"></div>
+						<label><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 44 44" enable-background="new 0 0 44 44" width="512px" height="512px">
+							<path d="M22,0C9.8,0,0,9.8,0,22s9.8,22,22,22s22-9.8,22-22S34.2,0,22,0z M15.3,18.3l1.4-1.4c0.2-0.2,0.4-0.3,0.7-0.3  c0.3,0,0.5,0.1,0.7,0.3l1,1c0.3,0.3,0.9,0.1,0.9-0.4V11c0-0.6,0.4-1,1-1h2c0.6,0,1,0.4,1,1v6.6c0,0.4,0.5,0.7,0.9,0.4l1-1  c0.2-0.2,0.4-0.3,0.7-0.3c0.3,0,0.5,0.1,0.7,0.3l1.4,1.4c0.2,0.2,0.3,0.4,0.3,0.7s-0.1,0.5-0.3,0.7l-6,6c-0.2,0.2-0.5,0.3-0.7,0.3  s-0.5-0.1-0.7-0.3l-6-6c-0.2-0.2-0.3-0.4-0.3-0.7C15,18.7,15.1,18.5,15.3,18.3z M35,33c0,0.6-0.4,1-1,1H10c-0.6,0-1-0.4-1-1v-6  c0-0.6,0.4-1,1-1h2c0.6,0,1,0.4,1,1v2.5c0,0.3,0.2,0.5,0.5,0.5h17c0.3,0,0.5-0.2,0.5-0.5V27c0-0.6,0.4-1,1-1h2c0.6,0,1,0.4,1,1V33z" fill="#FFFFFF"/>
+						</svg> <span>Download</span></label></a>
+					</div>
+
+
+				</div>
+			</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+<script src="js/jquery-3.0.0.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+
+<script type="text/javascript">
+
+
+
+var imageLoader = document.getElementById('imageLoader');
+imageLoader.addEventListener('change', handleImage, false);
+var canvas = document.getElementById('imageCanvas');
+var ctx = canvas.getContext('2d');
+var render = false;
+canvas.width = 800;
+canvas.height = 800;
+degrees = 0;
+
+var loaded;
+
+function handleImage(e){
+	console.log("inImg");
+	var reader = new FileReader();
+	reader.onload = function(event){
+		var img = new Image();
+
+		img.onload = function(){
+			loaded = img;
+			draw(loaded);
+		}
+		img.src = event.target.result;
+
+
+
+
+	}
+	reader.readAsDataURL(e.target.files[0]);    
+
+	setTimeout(function() {
+
+	}, 3000);
+
+
+
+	$('#canvas').delay(750).slideDown(
+	{
+		duration: 2000,
+		easing: 'easeOutElastic',
+		complete: function() {
+
+		}
+	});
+
+	$('#underline').delay(1500).slideDown(
+	{
+		duration: 1500,
+		easing: 'easeOutElastic',
+		complete: function() {
+
+		}
+	});
+	$('#uploader').addClass('no-bg')
+	$('#header').delay(300).slideUp(
+	{
+		duration: 1500,
+		easing: 'easeOutElastic',
+		complete: function() {
+
+		}
+	});
+
+
+
+}
+
+function draw(img) {
+			
+
+
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			ctx.save();
+			ctx.translate(canvas.width/2,canvas.height/2);
+			ctx.rotate(degrees*Math.PI/180);
+			console.log(img.width);
+			console.log(img.height);
+			if(img.width > img.height){
+				ratio = 800/img.height;
+				offset = (img.width*ratio - 800)/2
+								console.log(offset);
+
+				ctx.drawImage(img,-(img.width*ratio)/2,-(img.height*ratio)/2,img.width*ratio,img.height*ratio);
+			}else if(img.width < img.height){
+				ratio = 800/img.width;
+				offset = (img.height*ratio - 800)/2
+				ctx.drawImage(img,-(img.width*ratio)/2,-(img.height*ratio)/2,img.width*ratio,img.height*ratio);
+			} else {
+				ratio = 800/img.width;
+				ctx.drawImage(img,-(img.width*ratio)/2,-(img.height*ratio)/2,img.width*ratio,img.height*ratio);
+			}
+			ctx.restore();
+
+
+			var img2 = new Image();
+
+			img2.src = "overlay.png";
+			img2.onload = function() {
+				ctx.drawImage(img2, 0,0);
+				render = true;
+				var dt = canvas.toDataURL('image/png');
+				dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+
+				dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png');
+
+				$("#download-btn").attr("href",dt);
+			}
+}
+
+function dlCanvas() {
+	var dt = canvas.toDataURL('image/png');
+	dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+
+	dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png');
+
+	this.href = dt;
+};
+document.getElementById("download-btn").addEventListener('click', dlCanvas, false);
+
+$( document ).ready(function() {
+
+	$("#rotater").click(function(){ 
+	    degrees += 90;
+	    draw(loaded);
+
+	});
+});
+
+</script>
+<script src="js/custom-file-input.js"></script>
+
+</html>
